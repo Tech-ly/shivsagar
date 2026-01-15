@@ -67,9 +67,10 @@ export default function Home() {
     <div>
       {/* Hero Section */}
       <section className="relative h-[80vh] flex items-center justify-center text-center text-white bg-black">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/banner.png" alt="Travel Banner" className="absolute inset-0 w-full h-full object-cover opacity-60" />
         <div className="relative z-10 p-5">
-            <h1 className="text-5xl md:text-7xl font-bold mb-4">Discover India's Beauty</h1>
+            <h1 className="text-5xl md:text-7xl font-bold mb-4">Discover India&apos;s Beauty</h1>
             <p className="text-xl mb-8">Premium packages for Goa, Rajasthan, Kerala & more.</p>
             <a href="#packages" className="btn-primary text-lg px-8 py-3">Explore Now</a>
         </div>
@@ -109,6 +110,7 @@ export default function Home() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {filtered.map(pkg => (
                     <div key={pkg.id} className="card bg-white">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src={pkg.image} alt={pkg.name} className="w-full h-48 object-cover" />
                         <div className="p-5">
                             <div className="flex justify-between items-center mb-2">

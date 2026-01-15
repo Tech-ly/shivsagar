@@ -8,6 +8,11 @@ export default function Cart() {
     const [total, setTotal] = useState(0);
     const router = useRouter();
 
+    const calculateTotal = (items) => {
+        const t = items.reduce((sum, item) => sum + Number(item.price), 0);
+        setTotal(t);
+    };
+
     useEffect(() => {
         const user = localStorage.getItem('user');
         if (!user) {
@@ -17,14 +22,10 @@ export default function Cart() {
         
         const cartKey = `cart_${user}`;
         const stored = JSON.parse(localStorage.getItem(cartKey) || '[]');
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setCart(stored);
         calculateTotal(stored);
-    }, []);
-
-    const calculateTotal = (items) => {
-        const t = items.reduce((sum, item) => sum + Number(item.price), 0);
-        setTotal(t);
-    };
+    }, [router]);
 
     const removeFromCart = (id) => {
         const user = localStorage.getItem('user');
@@ -54,6 +55,7 @@ export default function Cart() {
                 <div className="md:col-span-2">
                     {cart.map(item => (
                         <div key={item.id} className="flex flex-col md:flex-row items-center border p-4 mb-4 rounded shadow-sm bg-white">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img src={item.image} className="w-24 h-24 object-cover rounded mr-4" alt={item.name} />
                             <div className="grow">
                                 <h3 className="font-bold text-lg">{item.name}</h3>

@@ -11,6 +11,7 @@ export default function Navbar() {
 
   useEffect(() => {
     // Check auth
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setRole(localStorage.getItem('role'));
     
     // Check cart

@@ -44,6 +44,7 @@ export default function Admin() {
             toast.error('Access Denied. Admins Only.');
             router.push('/login');
         } else {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             fetchData();
         }
     }, [router]);
@@ -302,6 +303,7 @@ export default function Admin() {
                             {brochures.map(b => (
                                 <div key={b.id} className="card bg-white p-4 shadow flex flex-col justify-between">
                                     <div>
+                                        {/* eslint-disable-next-line @next/next/no-img-element */}
                                         {b.image && <img src={b.image} alt={b.name} className="w-full h-32 object-cover mb-2 rounded" />}
                                         <h4 className="font-bold text-lg">{b.title}</h4>
                                         <p className="text-gray-600 text-sm">{b.description}</p>

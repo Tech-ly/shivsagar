@@ -15,8 +15,9 @@ export default function Contact() {
             return;
         }
         const cartKey = `cart_${user}`;
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setCart(JSON.parse(localStorage.getItem(cartKey) || '[]'));
-    }, []);
+    }, [router]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
