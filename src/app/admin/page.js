@@ -165,10 +165,10 @@ export default function Admin() {
                 </div>
                 <nav className="space-y-4">
                     <button onClick={() => { setTab('add-package'); setIsSidebarOpen(false); }} className={`block w-full text-left p-2 rounded ${tab === 'add-package' ? 'bg-yellow-600' : ''}`}>Add Package</button>
-                    <button onClick={() => { setTab('manage-packages'); setIsSidebarOpen(false); }} className={`block w-full text-left p-2 rounded ${tab === 'manage-packages' ? 'bg-yellow-600' : ''}`}>Manage Packages</button>
-                    <button onClick={() => { setTab('add-brochures'); setIsSidebarOpen(false); }} className={`block w-full text-left p-2 rounded ${tab === 'add-brochures' ? 'bg-yellow-600' : ''}`}>Manage Brochures</button>
-                    <button onClick={() => { setTab('inquiries'); setIsSidebarOpen(false); }} className={`block w-full text-left p-2 rounded ${tab === 'inquiries' ? 'bg-yellow-600' : ''}`}>Inquiries</button>
-                    <button onClick={() => { setTab('users'); setIsSidebarOpen(false); }} className={`block w-full text-left p-2 rounded ${tab === 'users' ? 'bg-yellow-600' : ''}`}>Users</button>
+                    <button onClick={() => { setTab('manage-packages'); fetchData(); setIsSidebarOpen(false); }} className={`block w-full text-left p-2 rounded ${tab === 'manage-packages' ? 'bg-yellow-600' : ''}`}>Manage Packages</button>
+                    <button onClick={() => { setTab('add-brochures'); fetchData(); setIsSidebarOpen(false); }} className={`block w-full text-left p-2 rounded ${tab === 'add-brochures' ? 'bg-yellow-600' : ''}`}>Manage Brochures</button>
+                    <button onClick={() => { setTab('inquiries'); fetchData(); setIsSidebarOpen(false); }} className={`block w-full text-left p-2 rounded ${tab === 'inquiries' ? 'bg-yellow-600' : ''}`}>Inquiries</button>
+                    <button onClick={() => { setTab('users'); fetchData(); setIsSidebarOpen(false); }} className={`block w-full text-left p-2 rounded ${tab === 'users' ? 'bg-yellow-600' : ''}`}>Users</button>
                 </nav>
             </div>
             
@@ -314,6 +314,45 @@ export default function Admin() {
                                     </div>
                                 </div>
                             ))}
+                        </div>
+                        
+                        {/* Brochure Inquiries Section */}
+                        <div className="mt-12 border-t pt-8">
+                            <h3 className="text-xl font-bold mb-4">Brochure Inquiries</h3>
+                            <div className="bg-white rounded shadow overflow-hidden overflow-x-auto">
+                                <table className="w-full min-w-[600px]">
+                                    <thead className="bg-blue-100">
+                                        <tr>
+                                            <th className="p-3 text-left">Brochure</th>
+                                            <th className="p-3 text-left">Customer Name</th>
+                                            <th className="p-3 text-left">Mobile</th>
+                                            <th className="p-3 text-left">Message</th>
+                                            <th className="p-3 text-left">Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {inquiries.filter(i => i.brochureTitle || i.message.includes('INQUIRY FOR BROCHURE:')).length === 0 ? (
+                                            <tr><td colSpan="5" className="p-4 text-center text-gray-500">No brochure inquiries found.</td></tr>
+                                        ) : (
+                                            inquiries.filter(i => i.brochureTitle || i.message.includes('INQUIRY FOR BROCHURE:')).map((i, idx) => {
+                                                const title = i.brochureTitle || (i.message.match(/INQUIRY FOR BROCHURE: (.*)/) || [])[1] || 'Unknown Brochure';
+                                                // Remove the flag text from message for cleaner display
+                                                const cleanMessage = i.message.replace(/\n\nINQUIRY FOR BROCHURE: .*/, '');
+                                                
+                                                return (
+                                                    <tr key={idx} className="border-t">
+                                                        <td className="p-3 font-semibold text-blue-800">{title}</td>
+                                                        <td className="p-3">{i.name}</td>
+                                                        <td className="p-3">{i.mobile}</td>
+                                                        <td className="p-3">{cleanMessage}</td>
+                                                        <td className="p-3 text-sm text-gray-500">{new Date(i.date).toLocaleDateString()}</td>
+                                                    </tr>
+                                                );
+                                            })
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 )}

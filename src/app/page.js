@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 export default function Home() {
   const [packages, setPackages] = useState([]);
   const [filtered, setFiltered] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [searchState, setSearchState] = useState('');
   const [priceRange, setPriceRange] = useState('');
   const router = useRouter();
@@ -17,6 +18,7 @@ export default function Home() {
       .then(data => {
         setPackages(data);
         setFiltered(data);
+        setLoading(false);
       });
   }, []);
 
@@ -104,26 +106,28 @@ export default function Home() {
       <section id="packages" className="container mx-auto py-16 px-4">
         <h2 className="text-3xl font-bold text-center mb-10">Our Best Selling Packages</h2>
         
-        {filtered.length === 0 ? (
+        {loading ? (
+             <p className="text-center text-black font-medium text-xl">Loading Best packages...</p>
+        ) : filtered.length === 0 ? (
             <p className="text-center text-black font-medium">No packages found.</p>
         ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {filtered.map(pkg => (
-                    <div key={pkg.id} className="card bg-white">
+                    <div key={pkg.id} className="card bg-white flex flex-col h-full">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src={pkg.image} alt={pkg.name} className="w-full h-48 object-cover" />
-                        <div className="p-5">
+                        <div className="p-5 flex flex-col flex-grow">
                             <div className="flex justify-between items-center mb-2">
                                 <span className="bg-yellow-200 text-yellow-800 text-xs px-2 py-1 rounded-full uppercase font-bold">{pkg.state}</span>
                                 <span className="text-black font-semibold text-sm">{pkg.duration}</span>
                             </div>
                             <h3 className="text-xl font-bold mb-2">{pkg.name}</h3>
-                            <ul className="text-sm text-black font-medium mb-4 list-disc list-inside">
+                            <ul className="text-sm text-black font-medium mb-4 list-disc list-inside h-24 overflow-hidden">
                                 {pkg.features && pkg.features.map((f, i) => <li key={i}>{f}</li>)}
                             </ul>
-                            <div className="flex justify-between items-center mt-4 border-t pt-4">
+                            <div className="flex justify-between items-center mt-auto border-t pt-4">
                                 <span className="text-2xl font-bold text-yellow-600">₹{pkg.price}</span>
-                                <button onClick={() => addToCart(pkg)} className="btn-primary text-sm">Add to Cart</button>
+                                <button onClick={() => router.push(`/package/${pkg.id}`)} className="btn-primary text-sm">View Details</button>
                             </div>
                         </div>
                     </div>

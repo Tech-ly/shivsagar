@@ -1,15 +1,11 @@
 import { NextResponse } from 'next/server';
-import { deleteBrochure, updateBrochure } from '@/lib/db';
+import { getBrochureById } from '@/lib/db';
 
-export async function DELETE(req, { params }) {
-    const { id } = await params;
-    await deleteBrochure(id);
-    return NextResponse.json({ success: true });
-}
-
-export async function PUT(req, { params }) {
-    const { id } = await params;
-    const body = await req.json();
-    await updateBrochure(id, body);
-    return NextResponse.json({ success: true });
+export async function GET(request, { params }) {
+  const brochure = await getBrochureById(params.id);
+  if (brochure) {
+    return NextResponse.json(brochure);
+  } else {
+    return NextResponse.json({ error: 'Brochure not found' }, { status: 404 });
+  }
 }

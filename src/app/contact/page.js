@@ -1,12 +1,15 @@
 'use client';
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import toast from 'react-hot-toast';
 
-export default function Contact() {
+function ContactContent() {
     const [form, setForm] = useState({ name: '', email: '', mobile: '', message: '' });
     const [cart, setCart] = useState([]);
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const brochureTitle = searchParams.get('brochureTitle');
+    const brochureId = searchParams.get('brochureId');
 
     useEffect(() => {
         const user = localStorage.getItem('user');
@@ -29,16 +32,27 @@ export default function Contact() {
         if (cart.length > 0) {
             finalMessage += "\n\nBOOKING REQUEST FOR PACKAGES:\n" + cart.map(i => `- ${i.name} (₹${i.price})`).join('\n');
         }
+        if (brochureTitle) {
+            finalMessage += `\n\nINQUIRY FOR BROCHURE: ${brochureTitle}`;
+        }
+
+        const payload = { ...form, message: finalMessage };
+        if (brochureId) {
+            payload.brochureId = brochureId;
+            payload.brochureTitle = brochureTitle;
+        }
 
         const res = await fetch('/api/contact', {
             method: 'POST',
-            body: JSON.stringify({ ...form, message: finalMessage })
+            body: JSON.stringify(payload)
         });
 
         if (res.ok) {
             toast.success('Inquiry sent successfully! We will contact you shortly.');
-            localStorage.removeItem(cartKey);
-            window.dispatchEvent(new Event('cart-updated'));
+            if (cart.length > 0) {
+                localStorage.removeItem(cartKey);
+                window.dispatchEvent(new Event('cart-updated'));
+            }
             setTimeout(() => router.push('/'), 2000);
         } else {
             toast.error('Failed to send inquiry. Please try again.');
@@ -56,6 +70,13 @@ export default function Contact() {
                         <ul className="text-sm mt-2 ml-4 list-disc">
                             {cart.map(c => <li key={c.id}>{c.name} - ₹{c.price}</li>)}
                         </ul>
+                    </div>
+                )}
+
+                {brochureTitle && (
+                    <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded">
+                        <h3 className="font-bold text-blue-800">Inquiry for Brochure:</h3>
+                        <p className="text-sm mt-2 ml-4 font-semibold">{brochureTitle}</p>
                     </div>
                 )}
 
@@ -84,5 +105,13 @@ export default function Contact() {
                 </form>
             </div>
         </div>
+    );
+}
+
+export default function Contact() {
+    return (
+        <Suspense fallback={<div className="text-center py-10">Loading...</div>}>
+            <ContactContent />
+        </Suspense>
     );
 }

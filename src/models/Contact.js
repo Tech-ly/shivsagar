@@ -20,6 +20,12 @@ const ContactSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Please provide a message'],
   },
+  brochureId: {
+      type: String
+  },
+  brochureTitle: {
+      type: String
+  },
   date: {
     type: Date,
     default: Date.now,
