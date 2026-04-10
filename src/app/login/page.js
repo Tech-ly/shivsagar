@@ -10,7 +10,7 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     // Admin Check
-    if (data.username === 'Admin' && data.password === 'Admin@123') {
+    if (data.username === 'admin@123.com' && data.password === 'admin@123') {
         localStorage.setItem('role', 'admin');
         localStorage.setItem('user', 'Admin');
         toast.success('Welcome Admin!');

@@ -9,6 +9,11 @@ export default function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (data.mobile.length < 10) {
+        toast.error("Mobile number must be at least 10 digits");
+        return;
+    }
+
     if (data.password !== data.confirm) {
         toast.error("Passwords do not match");
         return;
@@ -21,8 +26,10 @@ export default function Register() {
     const result = await res.json();
     
     if (result.success) {
-        toast.success("Registration Successful!");
-        router.push('/login');
+        localStorage.setItem('user', result.user.username);
+        localStorage.setItem('role', result.user.role);
+        toast.success("Registration Successful! You are now logged in.");
+        window.location.href = '/';
     } else {
         toast.error(result.error || 'Registration Failed');
     }

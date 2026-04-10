@@ -46,7 +46,7 @@ export async function createUser({ username, mobile, password }) {
   });
   return {
     success: true,
-    user: { username: newUser.username, role: newUser.role },
+    user: { username: newUser.username, role: newUser.role, mobile: newUser.mobile },
   };
 }
 

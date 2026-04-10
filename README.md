@@ -35,8 +35,8 @@ A premium travel website built with Next.js, Tailwind CSS, and a local JSON data
 
 ## Admin Credentials
 
-- **Username**: `Admin`
-- **Password**: `Admin@123`
+- **Username**: `admin@123.com`
+- **Password**: `admin@123`
 - Login at `/login` to be redirected to `/admin`.
 
 ## Database

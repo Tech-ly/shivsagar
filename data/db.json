@@ -2,9 +2,9 @@
   "users": [
     {
       "id": "admin_1",
-      "username": "Admin",
+      "username": "admin@123.com",
       "mobile": "0000000000",
-      "password": "Admin@123",
+      "password": "admin@123",
       "role": "admin"
     },
     {
